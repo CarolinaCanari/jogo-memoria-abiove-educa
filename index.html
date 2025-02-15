@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background-image: url('meninos.png');
+            background-size: cover;
+            background-position: center;
+           
+                     }
+
+        
+        h1 {
+            font-size: 35px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #37811f;
+        }
+
+        p {
+            font-size: 22px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            background-color: #BADDB4;
+       
+        }
+
+        .game-board {
+            display: none;
+            grid-template-columns: repeat(4, 170px);
+            /* Ajuste o tamanho conforme necessário */
+            grid-template-rows: repeat(3, 230px);
+            /* Ajuste o tamanho conforme necessário */
+            gap: 20px 30px;
+            /* Espaçamento entre as cartas */
+        }
+
+        .card {
+            width: 180px;
+            height: 240px;
+            background-image: url('verso.png');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.5s;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            display: none;
+            border-radius: 8px;
+        }
+
+        .flipped {
+            background-image: none;
+        }
+
+        .flipped img {
+            display: block;
+        }
+
+        #message,
+        #startScreen {
+            text-align: center;
+            font-size: 20px;
+        }
+
+
+
+        #restart,
+        #startButton {
+            margin-top: 20px;
+            padding: 20px 35px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 22px;
+        }
+
+        #startButton:hover {
+            background-color: #D18B2F;
+        }
+
+        #startScreen {
+            display: block;
+                 }
+
+        @media (max-width: 768px) {
+
+            
+           #startScreen {
+            width:300px;
+            padding: 0;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+            .game-board {
+                grid-template-columns: repeat(3, 90px);
+                /* 3 colunas para telas menores */
+                grid-template-rows: repeat(4, 120px);
+                /* Ajusta as linhas */
+                gap: 10px;
+            }
+
+            .card {
+                width: 90px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            #startScreen {
+            width: 300px;
+            padding: 0;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .game-board {
+                grid-template-columns: repeat(3, 70px);
+                /* 3 colunas menores para telas pequenas */
+                grid-template-rows: repeat(4, 100px);
+                gap: 8px;
+            }
+
+            .card {
+                width: 70px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="startScreen">
+        <h1>Jogo da Memória dos Objetos e Materiais</h1>
+        <p>Todo objeto é feito de um material. <br> Encontre e associe cada objeto ao seu material.</p>
+        <button id="startButton" onclick="startGame()">Iniciar Jogo</button>
+    </div class="container">
+    <div class="game-board" id="gameBoard"></div>
+    <div id="message" style="display: none;">
+        <p>Parabéns! Você completou o jogo!</p>
+    </div>
+    <button id="restart" style="display: none;" onclick="startGame()">Jogar novamente</button>
+
+    <script>
+        const pairs = [
+            ['banco-madeira.png', 'madeira-banco.png'], ['tecido-camiseta.png', 'camiseta-tecido.png'], ['garrafa-plastico.png', 'plastico-garrafa.png'],
+            ['metal-latinha.png', 'latinha-metal.png'], ['livro-papel.png', 'papel-livro.png'], ['vidro-copo.png', 'copo-vidro.png']
+        ];
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function shuffle(array) {
+            return array.sort(() => 0.5 - Math.random());
+        }
+
+        function startGame() {
+            document.getElementById("startScreen").style.display = "none";
+            const board = document.getElementById("gameBoard");
+            board.style.display = "grid";
+            board.innerHTML = "";
+            document.getElementById("message").style.display = "none";
+            document.getElementById("restart").style.display = "none";
+            matchedPairs = 0;
+            flippedCards = [];
+            cards = shuffle(pairs.flat());
+
+            cards.forEach((image, index) => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.dataset.pair = pairs.find(pair => pair.includes(image)).join(',');
+
+                const img = document.createElement("img");
+                img.src = image;
+                card.appendChild(img);
+
+                card.addEventListener("click", () => flipCard(card));
+                board.appendChild(card);
+            });
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+                card.classList.add("flipped");
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.pair === card2.dataset.pair) {
+                card1.style.visibility = "hidden";
+                card2.style.visibility = "hidden";
+                matchedPairs++;
+                if (matchedPairs === pairs.length) {
+                    document.getElementById("message").style.display = "block";
+                    document.getElementById("restart").style.display = "block";
+                }
+            } else {
+                card1.classList.remove("flipped");
+                card2.classList.remove("flipped");
+            }
+            flippedCards = [];
+        }
+       
+
+        // Ajusta o tamanho do tabuleiro ao iniciar o jogo e ao redimensionar a tela
+        window.addEventListener("resize", adjustBoardSize);
+        document.addEventListener("DOMContentLoaded", adjustBoardSize);
+
+    </script>
+</body>
+
+</html>
