@@ -113,6 +113,68 @@
         #startButton:hover {
             background-color: #D18B2F;
         }
+
+          @media (max-width: 768px) {
+body {
+    background-image:none;
+    background-color:#FFEA94;
+}
+
+            #startScreen {
+                width: 300px;
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .game-board {
+                grid-template-columns: repeat(3, 95px);
+                /* 3 colunas para telas menores */
+                grid-template-rows: repeat(4, 150px);
+                /* Ajusta as linhas */
+                gap: 20px;
+            }
+
+            .card {
+                width: 100px;
+                height: 125px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            #startScreen {
+                width: 300px;
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .game-board {
+                grid-template-columns: repeat(3, 95px);
+                /* 3 colunas menores para telas pequenas */
+                grid-template-rows: repeat(4, 140px);
+                gap: 15px;
+            }
+
+            .card {
+                width: 80px;
+                height: 100px;
+            }
+        }
+        
     </style>
 </head>
 
