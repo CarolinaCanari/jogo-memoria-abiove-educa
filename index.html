@@ -16,6 +16,7 @@
             background-image: url('meninos.png');
             background-size: cover;
             background-position: center;
+            color: #2c3e50;
         }
 
         body h1 {
@@ -23,24 +24,23 @@
 
         }
 
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 900vh;
-            width: 100%;
+
+
+        #restart {
+            margin-top: 20px;
+            /* Pode ajustar o espaçamento, se necessário */
         }
 
         .game-board {
             display: none;
             grid-template-columns: repeat(4, 140px);
-            grid-template-rows: repeat(3, 180px);
+            grid-template-rows: repeat(3, 200px);
             gap: 20px 30px;
         }
 
         .card {
             width: 140px;
-            height: 180px;
+            height: 200px;
             background-image: url('verso.png');
             background-size: cover;
             display: flex;
@@ -84,7 +84,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-              background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.7);
             /* Fundo branco semi-transparente */
             padding: 20px;
             border-radius: 10px;
@@ -94,12 +94,13 @@
             color: #37811f;
             z-index: 10;
             /* Garante que fique acima das cartas */
-          
+
         }
 
         #restart,
         #startButton {
             margin-top: 20px;
+            margin-bottom: 50px;
             padding: 20px 35px;
             background-color: #37811f;
             color: white;
@@ -114,14 +115,66 @@
             background-color: #D18B2F;
         }
 
-          @media (max-width: 768px) {
-body {
-    background-image:none;
-    background-color:#FFEA94;
-}
+
+        .pdf-link {
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .pdf-link:hover {
+            color: #D18B2F;
+            font-weight: bold;
+        }
+
+        .credito {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #2c3e50;
+            font-size: 16px;
+            line-height: 15px;
+        }
+
+        h3,
+        h4,
+        h5 {
+            font-weight: lighter;
+        }
+
+        #restart {
+            display: none;
+            /* Esconde o botão inicialmente */
+            position: fixed;
+            /* Faz o botão ficar fixo na tela */
+            top: 50%;
+            /* Centraliza verticalmente */
+            left: 50%;
+            /* Centraliza horizontalmente */
+            transform: translate(-50%, -50%);
+            /* Ajuste final para centralização */
+            padding: 20px 35px;
+            background-color: #37811f;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 22px;
+            z-index: 10;
+            margin-top: 80px;
+        }
+
+
+
+        @media (max-width: 768px) {
+            body {
+                background-image: none;
+                background-color: #FFEA94;
+            }
 
             #startScreen {
-                width: 300px;
+                width: 350px;
                 padding: 0;
             }
 
@@ -129,8 +182,29 @@ body {
                 font-size: 28px;
             }
 
+            h3,
+            h4,
+            h5 {
+                margin: 15px;
+                ;
+            }
+
             p {
                 font-size: 18px;
+            }
+
+            h3 {
+                font-size: 15px;
+            }
+
+            h4 {
+                line-height: 20px;
+                font-size: 13px;
+            }
+
+
+            h5 {
+                font-size: 12px;
             }
 
             .game-board {
@@ -145,7 +219,13 @@ body {
                 width: 100px;
                 height: 125px;
             }
+
+            #restart {
+
+                font-size: 20px;
+            }
         }
+
 
         @media (max-width: 480px) {
 
@@ -156,10 +236,6 @@ body {
 
             h1 {
                 font-size: 28px;
-            }
-
-            p {
-                font-size: 18px;
             }
 
             .game-board {
@@ -173,8 +249,14 @@ body {
                 width: 80px;
                 height: 100px;
             }
+
+            .credito {
+
+                font-size: 1.2rem;
+                bottom: 8%;
+                padding: 5px;
+            }
         }
-        
     </style>
 </head>
 
@@ -182,7 +264,15 @@ body {
     <div id="startScreen">
         <h1>Jogo da Memória - Objetos e Materiais</h1>
         <p>Encontre e associe cada objeto ao seu material.</p>
+        <p> <a href="regras.pdf" target="_blank" class="pdf-link">Ver regras do jogo.</a></p>
         <button id="startButton" onclick="startGame()">Iniciar Jogo</button>
+
+        <div class="credito">
+            <h3>Uma iniciativa <b>ABIOVE</h3>
+            <h4>Produzido por Via Educação e Desenvolvimento</h4>
+            <h5><i>Design & Coding</i>- Ana Carolina Sanches Canari</h5>
+        </div>
+
     </div>
 
     <div class="game-board" id="gameBoard"></div>
@@ -194,6 +284,12 @@ body {
     </div>
 
     <script>
+
+        document.querySelector(".pdf-link").addEventListener("click", function (event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+            window.open("regras.pdf", "_blank"); // Abre em uma nova guia
+        });
+
         const pairs = [
             ['banco-madeira.png', 'madeira-banco.png'],
             ['tecido-camiseta.png', 'camiseta-tecido.png'],
@@ -283,6 +379,8 @@ body {
                 document.getElementById("restart").style.display = "block";
             }, 2000);
         }
+
+
     </script>
 </body>
 
